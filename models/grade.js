@@ -1,4 +1,5 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
+
 
 const gradeSchema = mongoose.Schema({
     name: {
@@ -24,12 +25,12 @@ const gradeSchema = mongoose.Schema({
     }
 });
 
-Schema.method('toJSON', function() {
+gradeSchema.method('toJSON', function() {
     const {__v, _id, ...object} = this.toObject();
     object.id = _id;
     return object;
-})
+});
 
-const  gradeModel =  mongoose.model('grade', gradeSchema, 'grade');
+const gradeModel =  mongoose.model('grade', gradeSchema, 'grade');
 
-export { gradeModel };
+export default gradeModel 
