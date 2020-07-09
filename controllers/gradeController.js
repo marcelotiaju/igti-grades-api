@@ -40,7 +40,10 @@ const findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const grade = await gradeModel.find({_id: id});
+    const grade = await gradeModel.findById({_id: id});
+    if(!grade) {
+      res.send('Dados não encontrado');
+    }
     res.send(grade);
 
     logger.info(`GET /grade - ${id}`);
@@ -60,7 +63,7 @@ const update = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const grade = await gradeModel.findOneAndUpdate({_id: id}, req.body, {new: true });
+    const grade = await gradeModel.findByIdAndUpdate({_id: id}, req.body, {new: true });
     if(!grade) res.status(404).send('Documento nao encontrado na colecao');
     res.send({ message: 'Grade atualizado com sucesso' });
 
@@ -75,7 +78,7 @@ const remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const grade = await gradeModel.findOneAndDelete({_id: id});
+    const grade = await gradeModel.findByIdAndRemove({_id: id});
     if(!grade) res.status(404).send('Documento nao encontrado na colecao');
     res.send({ message: 'Grade excluido com sucesso' });
 
@@ -89,7 +92,6 @@ const remove = async (req, res) => {
 };
 
 const removeAll = async (req, res) => {
-  const id = req.params.id;
 
   try {
     const grade = await gradeModel.deleteMany({});

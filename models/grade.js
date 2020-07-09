@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const gradeSchema = mongoose.Schema({
     name: {
@@ -24,10 +24,11 @@ const gradeSchema = mongoose.Schema({
     }
 });
 
-gradeSchema.virtual("id").get(function() {
-    return this._id.toHexString();
-});
-gradeSchema.set("toJSON", {virtuals: true});
+Schema.method('toJSON', function() {
+    const {__v, _id, ...object} = this.toObject();
+    object.id = _id;
+    return object;
+})
 
 const  gradeModel =  mongoose.model('grade', gradeSchema, 'grade');
 
